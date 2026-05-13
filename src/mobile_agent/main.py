@@ -7,7 +7,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class CFG:
 
-    model_path: Path = Path.home() / "llm/models/gemma-4-E2B-it-Q4_K_M.gguf"
+    model_path: Path = Path.home() / "models/gemma-4-E2B-it-Q4_K_M.gguf"
 
     system_prompt: str = (
         "You are Gemma-4-E2B, a helpful assistant running on a flagship smartphone."
