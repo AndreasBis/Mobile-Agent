@@ -1,0 +1,96 @@
+## Mobile Agent
+
+Run a local Gemma GGUF model on a Samsung S25+ through Termux and `llama-cli`.
+
+This repository is intentionally small. The Python entrypoint builds a `llama-cli` command from a typed configuration object, then replaces the Python process with `llama-cli` so inference runs directly in the llama.cpp runtime.
+
+## Target Environment
+
+The setup is designed for:
+
+- Samsung S25+
+- Termux on Android
+- Termux `llama-cpp` package
+- Python 3.12+
+- A local GGUF model file
+
+The default model path is:
+
+```bash
+~/llm/models/gemma-4-E2B-it-Q4_K_M.gguf
+```
+
+## Fresh Termux Setup
+
+Update Termux and install the required packages:
+
+```bash
+pkg update && pkg upgrade -y
+termux-setup-storage
+pkg install -y llama-cpp python git wget curl openssh
+mkdir -p ~/llm/models ~/llm/logs
+```
+
+Optional SSH setup:
+
+```bash
+passwd
+sshd
+termux-wake-lock
+```
+
+Connect from another machine:
+
+```bash
+ssh -p 8022 <termux-username>@<phone-ip>
+```
+
+Release the wake lock when SSH use is done:
+
+```bash
+termux-wake-unlock
+```
+
+## Download The Model
+
+Install Hugging Face download dependencies:
+
+```bash
+python -m pip install --no-deps huggingface_hub
+python -m pip install filelock fsspec packaging pyyaml requests tqdm typing-extensions httpx
+export HF_HUB_DISABLE_XET=1
+echo 'export HF_HUB_DISABLE_XET=1' >> ~/.bashrc
+source ~/.bashrc
+```
+
+Download the default model:
+
+```bash
+cd ~/llm/models
+hf download unsloth/gemma-4-E2B-it-GGUF gemma-4-E2B-it-Q4_K_M.gguf --local-dir .
+```
+
+## Run
+
+From this repository:
+
+```bash
+python main.py
+```
+
+If you keep a phone-local copy under `~/llm/main.py`, run:
+
+```bash
+python ~/llm/main.py
+```
+
+## Performance Notes
+
+Observed performance with the default Q4_K_M model on the S25+ is approximately:
+
+- Prompt processing: around `48 t/s`
+- Token generation: around `15 t/s`
+
+Prompt processing is usually sensitive to `-b` and `-ub`. Token generation for a single user is usually not, because decode runs one new token at a time.
+
+Changing KV cache type between `f16`, `q8_0`, and `q4_0` may have little effect on generation speed for this setup. That usually means decode is limited by CPU kernels, memory bandwidth, scheduling, or thermals rather than KV cache format.
