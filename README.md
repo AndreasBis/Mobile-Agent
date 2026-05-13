@@ -41,7 +41,7 @@ The setup is designed for:
 The default model path is:
 
 ```bash
-~/llm/models/gemma-4-E2B-it-Q4_K_M.gguf
+~/models/gemma-4-E2B-it-Q4_K_M.gguf
 ```
 
 ## Fresh Termux Setup
@@ -52,7 +52,7 @@ Update Termux, grant storage access, and install the required packages:
 pkg update && pkg upgrade -y
 termux-setup-storage
 pkg install -y llama-cpp python git wget curl openssh
-mkdir -p ~/llm/models ~/llm/logs
+mkdir -p ~/models ~/logs
 ```
 
 Optional SSH setup:
@@ -90,7 +90,7 @@ source ~/.bashrc
 Download the default model:
 
 ```bash
-cd ~/llm/models
+cd ~/models
 hf download unsloth/gemma-4-E2B-it-GGUF gemma-4-E2B-it-Q4_K_M.gguf --local-dir .
 ```
 
@@ -108,10 +108,10 @@ Run the launcher:
 python -m mobile_agent
 ```
 
-If you keep a phone-local copy under `~/llm/main.py`, run:
+If you want to run the launcher script directly from the cloned repository:
 
 ```bash
-python ~/llm/main.py
+python src/mobile_agent/main.py
 ```
 
 ## Tests
