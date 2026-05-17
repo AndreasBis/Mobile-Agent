@@ -13,7 +13,10 @@ class CFG:
         "You are Gemma-4-E2B, a helpful assistant running on a flagship smartphone."
     )
 
-    context_tokens: int = 65536
+    #spec_draft_max_tokens: int = 16
+    #spec_draft_min_tokens: int = 0
+
+    context_tokens: int = 32768
     output_tokens: int = 4096
 
     threads: int = 8
@@ -22,6 +25,7 @@ class CFG:
     llama_cli_binary: str = "llama-cli"
     flash_attention: str = "on"
     cache_memory: int = 6144
+    #spec_type: str = "draft-mtp"
     color: str = "on"
 
     physical_batch_size: int = 256
@@ -47,6 +51,8 @@ class Runner:
         command = [
             self.cfg.llama_cli_binary,
             "-cnv",
+            "--no-mmproj",
+            "--no-mmproj-offload",
             "-m",
             str(self.cfg.model_path),
             "-sys",
@@ -57,6 +63,12 @@ class Runner:
             str(self.cfg.seed),
             "-fa",
             self.cfg.flash_attention,
+            #"--spec-type",
+            #self.cfg.spec_type,
+            #"--spec-draft-n-max",
+            #str(self.cfg.spec_draft_max_tokens),
+            #"--spec-draft-n-min",
+            #str(self.cfg.spec_draft_min_tokens),
             "-cram",
             str(self.cfg.cache_memory),
             "-co",

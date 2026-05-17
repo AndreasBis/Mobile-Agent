@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mobile-agent"
-version = "0.1.1"
+version = "0.1.2"
 description = "Run a local Gemma GGUF model on Android through Termux and llama-cli."
 requires-python = ">=3.12"
 
