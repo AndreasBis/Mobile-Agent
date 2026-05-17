@@ -132,8 +132,14 @@ python -m pytest
 
 Observed performance with the default Q4_K_M model on the S25+ is approximately:
 
-- Prompt processing: around `48 t/s`
-- Token generation: around `15 t/s`
+- Prompt processing: around `52 t/s`
+- Token generation: around `20 t/s`
+
+The stats above are reproducible with:
+
+1. **`Power Saving`** mode disabled.
+2. **`Performance profile`** set to `Balanced`.
+3. First prompt sent (follow-up prompts will run slower).
 
 Prompt processing is usually sensitive to `-b` and `-ub`. Token generation for a single user is usually not, because decode runs one new token at a time.
 
